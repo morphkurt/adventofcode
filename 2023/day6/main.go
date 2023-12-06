@@ -53,7 +53,6 @@ func task2(input string) int {
 		}
 	}
 	return r
-
 }
 
 func parse(input string) ([]int, []int) {

@@ -6,14 +6,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var i = `Time:      7  15   30
-Distance:  9  40  200`
+var i = ``
 
 func TestTask1(t *testing.T) {
 	got := task1(i)
 	want := 0
 
-	assert.Equal(t, got, want)
+	assert.Equal(t, want, got)
 }
 
 func TestTask2(t *testing.T) {

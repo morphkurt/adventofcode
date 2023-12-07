@@ -14,11 +14,10 @@ func main() {
 	fmt.Printf("task2:%d\n", task2)
 }
 
-func task2(input string) int {
+func task1(input string) int {
 	return 0
-
 }
 
-func task1(input string) int {
+func task2(input string) int {
 	return 0
 }

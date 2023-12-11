@@ -45,8 +45,7 @@ func task2(input string) int {
 			tempRow = GetSequence(tempRow)
 			intervals = append(intervals, tempRow)
 		}
-
-		results += GetNextBackwardsValue(intervals)
+		results += GetPrevValue(intervals)
 	}
 
 	return results
@@ -95,7 +94,7 @@ func GetNextValue(in [][]int) int {
 	return lastValue
 }
 
-func GetNextBackwardsValue(in [][]int) int {
+func GetPrevValue(in [][]int) int {
 	lastValue := 0
 	for i := len(in) - 1; i >= 0; i-- {
 		lastValue = in[i][0] - lastValue

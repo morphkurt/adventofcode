@@ -6,11 +6,20 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var i = ``
+var i = `O....#....
+O.OO#....#
+.....##...
+OO.#O....O
+.O.....O#.
+O.#..O.#.#
+..O..#O..O
+.......O..
+#....###..
+#OO..#....`
 
 func TestTask1(t *testing.T) {
 	got := task1(i)
-	want := 0
+	want := 136
 
 	assert.Equal(t, want, got)
 }
@@ -18,7 +27,7 @@ func TestTask1(t *testing.T) {
 func TestTask2(t *testing.T) {
 
 	got := task2(i)
-	want := 0
+	want := 64
 
-	assert.Equal(t, got, want)
+	assert.Equal(t, want, got)
 }

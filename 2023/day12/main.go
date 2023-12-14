@@ -32,7 +32,7 @@ func task2(input string) int {
 	file := Parse(input)
 	v := 0
 	for _, line := range file {
-		e := expand(line, 5)
+		e := expand(line, 7)
 		v += solve(e, false)
 	}
 	return v

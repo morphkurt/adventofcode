@@ -28,9 +28,13 @@ func task1(input string) int {
 
 func task2(input string) int {
 	r := 0
+	pattern := make(map[string]int)
+	patternIter := make(map[int]string)
+	cycleStart, cycleLength := 0, 0
 	final := ""
 	temp := input
-	for i := 0; i < 1000000000; i++ {
+	n := 1000000000
+	for i := 1; i < n+1; i++ {
 		if val, ok := m[temp]; ok {
 			temp = val
 		} else {
@@ -41,7 +45,17 @@ func task2(input string) int {
 			m[temp] = final
 			temp = final
 		}
+		if _, ok := pattern[temp]; ok {
+			cycleLength = i - pattern[temp]
+			cycleStart = pattern[temp]
+			break
+		} else {
+			pattern[temp] = i
+			patternIter[i] = temp
+		}
 	}
+	patternIndex := (n-cycleStart)%cycleLength + cycleStart
+	temp = patternIter[patternIndex]
 	for i, v := range strings.Split(temp, "\n") {
 		r += (len(v) - i) * countRocks(v)
 	}

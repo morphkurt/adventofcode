@@ -89,34 +89,34 @@ func Parse(input string) (matrix [][]rune, tiles [][]int) {
 	return matrix, tiles
 }
 
-func travel(currentX, currentY int, direction []int, matrix [][]rune, tiles [][]int) {
+func travel(curX, curY int, dir []int, matrix [][]rune, tiles [][]int) {
 
-	if currentX < 0 || currentX > len(matrix[0])-1 || currentY > len(matrix)-1 || currentY < 0 ||
-		hasVisited(tiles[currentY][currentX], direction) {
+	if curX < 0 || curX > len(matrix[0])-1 || curY > len(matrix)-1 || curY < 0 ||
+		hasVisited(tiles[curY][curX], dir) {
 		//Either reached corner or reached a loop
 
 	} else {
 		nextSteps := []nextStep{}
-		tiles[currentY][currentX] = markTile(tiles[currentY][currentX], direction)
-		switch c := matrix[currentY][currentX]; c {
+		tiles[curY][curX] = markTile(tiles[curY][curX], dir)
+		switch c := matrix[curY][curX]; c {
 		case '.':
-			nextSteps = append(nextSteps, nextStep{currentX + direction[1], currentY + direction[2], direction})
+			nextSteps = append(nextSteps, nextStep{curX + dir[1], curY + dir[2], dir})
 		case '/':
-			nextDirection := []int{}
-			switch d := direction[0]; d {
+			nextDir := []int{}
+			switch d := dir[0]; d {
 			case NORTH[0]:
-				nextDirection = EAST
+				nextDir = EAST
 			case SOUTH[0]:
-				nextDirection = WEST
+				nextDir = WEST
 			case EAST[0]:
-				nextDirection = NORTH
+				nextDir = NORTH
 			case WEST[0]:
-				nextDirection = SOUTH
+				nextDir = SOUTH
 			}
-			nextSteps = append(nextSteps, nextStep{currentX + nextDirection[1], currentY + nextDirection[2], nextDirection})
+			nextSteps = append(nextSteps, nextStep{curX + nextDir[1], curY + nextDir[2], nextDir})
 		case '\\':
 			nextDirection := []int{}
-			switch d := direction[0]; d {
+			switch d := dir[0]; d {
 			case NORTH[0]:
 				nextDirection = WEST
 			case SOUTH[0]:
@@ -126,43 +126,43 @@ func travel(currentX, currentY int, direction []int, matrix [][]rune, tiles [][]
 			case WEST[0]:
 				nextDirection = NORTH
 			}
-			nextSteps = append(nextSteps, nextStep{currentX + nextDirection[1], currentY + nextDirection[2], nextDirection})
+			nextSteps = append(nextSteps, nextStep{curX + nextDirection[1], curY + nextDirection[2], nextDirection})
 		case '-':
-			nextDirection1 := []int{}
-			nextDirection2 := []int{}
-			switch d := direction[0]; d {
+			nextDir1 := []int{}
+			nextDir2 := []int{}
+			switch d := dir[0]; d {
 			case NORTH[0]:
-				nextDirection1 = WEST
-				nextDirection2 = EAST
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection1[1], currentY + nextDirection1[2], nextDirection1})
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection2[1], currentY + nextDirection2[2], nextDirection2})
+				nextDir1 = WEST
+				nextDir2 = EAST
+				nextSteps = append(nextSteps, nextStep{curX + nextDir1[1], curY + nextDir1[2], nextDir1})
+				nextSteps = append(nextSteps, nextStep{curX + nextDir2[1], curY + nextDir2[2], nextDir2})
 			case SOUTH[0]:
-				nextDirection1 = WEST
-				nextDirection2 = EAST
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection1[1], currentY + nextDirection1[2], nextDirection1})
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection2[1], currentY + nextDirection2[2], nextDirection2})
+				nextDir1 = WEST
+				nextDir2 = EAST
+				nextSteps = append(nextSteps, nextStep{curX + nextDir1[1], curY + nextDir1[2], nextDir1})
+				nextSteps = append(nextSteps, nextStep{curX + nextDir2[1], curY + nextDir2[2], nextDir2})
 
 			default:
-				nextSteps = append(nextSteps, nextStep{currentX + direction[1], currentY + direction[2], direction})
+				nextSteps = append(nextSteps, nextStep{curX + dir[1], curY + dir[2], dir})
 			}
 		case '|':
-			nextDirection1 := []int{}
-			nextDirection2 := []int{}
-			switch d := direction[0]; d {
+			nextDir1 := []int{}
+			nextDir2 := []int{}
+			switch d := dir[0]; d {
 			case WEST[0]:
-				nextDirection1 = NORTH
-				nextDirection2 = SOUTH
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection1[1], currentY + nextDirection1[2], nextDirection1})
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection2[1], currentY + nextDirection2[2], nextDirection2})
+				nextDir1 = NORTH
+				nextDir2 = SOUTH
+				nextSteps = append(nextSteps, nextStep{curX + nextDir1[1], curY + nextDir1[2], nextDir1})
+				nextSteps = append(nextSteps, nextStep{curX + nextDir2[1], curY + nextDir2[2], nextDir2})
 
 			case EAST[0]:
-				nextDirection1 = NORTH
-				nextDirection2 = SOUTH
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection1[1], currentY + nextDirection1[2], nextDirection1})
-				nextSteps = append(nextSteps, nextStep{currentX + nextDirection2[1], currentY + nextDirection2[2], nextDirection2})
+				nextDir1 = NORTH
+				nextDir2 = SOUTH
+				nextSteps = append(nextSteps, nextStep{curX + nextDir1[1], curY + nextDir1[2], nextDir1})
+				nextSteps = append(nextSteps, nextStep{curX + nextDir2[1], curY + nextDir2[2], nextDir2})
 
 			default:
-				nextSteps = append(nextSteps, nextStep{currentX + direction[1], currentY + direction[2], direction})
+				nextSteps = append(nextSteps, nextStep{curX + dir[1], curY + dir[2], dir})
 			}
 		}
 		for _, step := range nextSteps {

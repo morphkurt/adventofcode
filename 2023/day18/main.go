@@ -49,6 +49,7 @@ func findArea(matrix [][]int) int {
 		perimeter += int(math.Abs(float64((matrix[j][0] - matrix[i][0]))) + math.Abs(float64((matrix[i][1] - matrix[j][1]))))
 		j = i
 	}
+	//til: pick's theorem
 	return area/2 + perimeter/2 + 1
 }
 
@@ -103,7 +104,15 @@ func Parse(input string) (out [][]int) {
 		case 3:
 			hexDirections = NORTH
 		}
-		out = append(out, []int{distance, tempDirection[0], tempDirection[1], tempDirection[2], int(distanceFromHex), hexDirections[0], hexDirections[1], hexDirections[2]})
+		out = append(out, []int{
+			distance, // distance
+			tempDirection[0],
+			tempDirection[1],     // x
+			tempDirection[2],     // y
+			int(distanceFromHex), // distance from hex
+			hexDirections[0],
+			hexDirections[1],  //x from hex
+			hexDirections[2]}) // y from hex
 	}
 	return out
 }

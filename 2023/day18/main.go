@@ -28,19 +28,14 @@ func task1(input string) int {
 	//starting location
 	s := []int{0, 0}
 	matrix = append(matrix, s)
-	maxX := math.MinInt64
-	minX := math.MaxInt32
-	maxY := math.MinInt64
-	minY := math.MaxInt32
 	for _, i := range ins {
 		curr := matrix[len(matrix)-1]
 		matrix = append(matrix, []int{curr[0] + (i[2] * i[0]), curr[1] + (i[3] * i[0])})
-		maxX = int(math.Max(float64(maxX), float64(matrix[len(matrix)-1][0])))
-		maxY = int(math.Max(float64(maxY), float64(matrix[len(matrix)-1][1])))
-		minX = int(math.Min(float64(minX), float64(matrix[len(matrix)-1][0])))
-		minY = int(math.Min(float64(minY), float64(matrix[len(matrix)-1][1])))
 	}
+	return findArea(matrix)
+}
 
+func findArea(matrix [][]int) int {
 	area := 0
 	j := len(matrix) - 1
 	for i := 0; i < len(matrix); i++ {
@@ -55,7 +50,6 @@ func task1(input string) int {
 		j = i
 	}
 	return area/2 + perimeter/2 + 1
-
 }
 
 func task2(input string) int {
@@ -64,33 +58,11 @@ func task2(input string) int {
 	//starting location
 	s := []int{0, 0}
 	matrix = append(matrix, s)
-	maxX := math.MinInt64
-	minX := math.MaxInt32
-	maxY := math.MinInt64
-	minY := math.MaxInt32
 	for _, i := range ins {
 		curr := matrix[len(matrix)-1]
 		matrix = append(matrix, []int{curr[0] + (i[6] * i[4]), curr[1] + (i[7] * i[4])})
-		maxX = int(math.Max(float64(maxX), float64(matrix[len(matrix)-1][0])))
-		maxY = int(math.Max(float64(maxY), float64(matrix[len(matrix)-1][1])))
-		minX = int(math.Min(float64(minX), float64(matrix[len(matrix)-1][0])))
-		minY = int(math.Min(float64(minY), float64(matrix[len(matrix)-1][1])))
 	}
-
-	area := 0
-	j := len(matrix) - 1
-	for i := 0; i < len(matrix); i++ {
-		area += (matrix[j][0] + matrix[i][0]) * (matrix[i][1] - matrix[j][1])
-		j = i
-	}
-
-	perimeter := 0
-	j = len(matrix) - 1
-	for i := 0; i < len(matrix); i++ {
-		perimeter += int(math.Abs(float64((matrix[j][0] - matrix[i][0]))) + math.Abs(float64((matrix[i][1] - matrix[j][1]))))
-		j = i
-	}
-	return area/2 + perimeter/2 + 1
+	return findArea(matrix)
 }
 
 func Parse(input string) (out [][]int) {
@@ -99,39 +71,39 @@ func Parse(input string) (out [][]int) {
 	for _, row := range rows {
 		c := strings.Split(row, " ")
 		direction := c[0]
-		tempD := []int{}
+		tempDirection := []int{}
 		distance, _ := strconv.Atoi(c[1])
 
 		hex := c[2]
 		switch direction {
 		case "R":
-			tempD = EAST
+			tempDirection = EAST
 		case "L":
-			tempD = WEST
+			tempDirection = WEST
 		case "U":
-			tempD = NORTH
+			tempDirection = NORTH
 		case "D":
-			tempD = SOUTH
+			tempDirection = SOUTH
 		}
-		hexD := []int{}
+		hexDirections := []int{}
 		hex = strings.ReplaceAll(hex, "(", "")
 		hex = strings.ReplaceAll(hex, ")", "")
 		hex = strings.ReplaceAll(hex, "#", "")
 		hexValue := hex[:5]
-		value, _ := strconv.ParseInt(hexValue, 16, 64)
+		distanceFromHex, _ := strconv.ParseInt(hexValue, 16, 64)
 
 		dir := int(hex[5] - '0')
 		switch dir {
 		case 0:
-			hexD = EAST
+			hexDirections = EAST
 		case 1:
-			hexD = SOUTH
+			hexDirections = SOUTH
 		case 2:
-			hexD = WEST
+			hexDirections = WEST
 		case 3:
-			hexD = NORTH
+			hexDirections = NORTH
 		}
-		out = append(out, []int{distance, tempD[0], tempD[1], tempD[2], int(value), hexD[0], hexD[1], hexD[2]})
+		out = append(out, []int{distance, tempDirection[0], tempDirection[1], tempDirection[2], int(distanceFromHex), hexDirections[0], hexDirections[1], hexDirections[2]})
 	}
 	return out
 }

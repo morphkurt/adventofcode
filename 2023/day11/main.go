@@ -48,7 +48,7 @@ func Parse(input string, interation int) (galaxy [][]string) {
 
 func FindGalaxies(matrix [][]string) (cordinates [][]int) {
 	cordinates = [][]int{}
-	for row, _ := range matrix {
+	for row := range matrix {
 		for col, c := range matrix[row] {
 			if c == "#" {
 				cordinates = append(cordinates, []int{col, row})

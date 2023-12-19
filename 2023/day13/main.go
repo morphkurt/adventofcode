@@ -95,7 +95,7 @@ func splitPointWithError(grid string) int {
 		j := 0
 		reflectionFound := false
 		for curr >= 0 && next < len(mirror) {
-			for i, _ := range mirror[curr] {
+			for i := range mirror[curr] {
 				if mirror[curr][i] != mirror[next][i] {
 					j++
 				}

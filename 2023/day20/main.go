@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/morphkurt/adventofcode/util"
@@ -238,31 +237,22 @@ func (b *BaseModule) buff(name string, s Signal) {
 	})
 }
 
-func (b *BaseModule) getCount() (int, int) {
+func (b BaseModule) getCount() (int, int) {
 	h := b.HighCount
 	l := b.LowCount
 	return h, l
 }
 
-func (b *BaseModule) getPending() int {
+func (b BaseModule) getPending() int {
 	return len(b.Buffer)
 }
 
-func (b *BaseModule) getOutputs() []*Module {
+func (b BaseModule) getOutputs() []*Module {
 	return b.Outputs
 }
 
-func (b *BaseModule) getName() string {
+func (b BaseModule) getName() string {
 	return b.Name
-}
-
-func (b *Conjuction) getMemory() string {
-	mem := b.Memory
-	out := ""
-	for _, v := range mem {
-		out += strconv.Itoa(v.Type)
-	}
-	return out
 }
 
 func Init(names, outputs [][]string) map[string]Module {

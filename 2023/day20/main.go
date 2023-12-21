@@ -46,7 +46,7 @@ type Conjuction struct {
 type Module interface {
 	buff(string, Signal)
 	process()
-	set(*Module)
+	setOutput(*Module)
 	getCount() (int, int)
 	getName() string
 	getPending() int
@@ -202,7 +202,9 @@ func (c *Conjuction) process() {
 					} else {
 						c.LowCount++
 					}
-					m.buff(c.Name, r)
+					if m != nil {
+						m.buff(c.Name, r)
+					}
 				}
 			}
 		}
@@ -227,8 +229,10 @@ func (c *Broadcaster) process() {
 	c.Buffer = []map[string]Signal{}
 }
 
-func (b *BaseModule) set(m *Module) {
-	b.Outputs = append(b.Outputs, m)
+func (b *BaseModule) setOutput(m *Module) {
+	if m != nil {
+		b.Outputs = append(b.Outputs, m)
+	}
 }
 
 func (b *BaseModule) buff(name string, s Signal) {
@@ -295,7 +299,7 @@ func Init(names, outputs [][]string) map[string]Module {
 		outputs := outputs[i]
 		for _, v := range outputs {
 			outputModule := moduleMap[v]
-			m.set(&outputModule)
+			m.setOutput(&outputModule)
 		}
 		moduleMap[names[i][0]] = m
 	}

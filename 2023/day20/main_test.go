@@ -10,8 +10,7 @@ var i = `broadcaster -> a
 %a -> inv, con
 &inv -> b
 %b -> con
-&con -> output
-output -> `
+&con -> output`
 
 func TestTask1(t *testing.T) {
 	got := task1(i)

@@ -68,7 +68,7 @@ func task2(input string) int {
 	count := 1000000
 	kh, lz, tg, hn := false, false, false, false
 	iter := []int{}
-	for i := 1; i < count; i++ {
+	for i := 1; i < count+1; i++ {
 		b.buff("button", Signal{Type: LOW})
 		pending := 1
 		for pending != 0 {
@@ -118,7 +118,7 @@ func task1(input string) int {
 	moduleMap := Init(m, o)
 	b := moduleMap["broadcaster"]
 	count := 1000
-	for i := 1; i < count; i++ {
+	for i := 1; i < count+1; i++ {
 		b.buff("button", Signal{Type: LOW})
 		pending := 1
 		for pending != 0 {

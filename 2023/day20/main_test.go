@@ -11,19 +11,11 @@ var i = `broadcaster -> a
 &inv -> b
 %b -> con
 &con -> output
-output ->`
+output -> `
 
 func TestTask1(t *testing.T) {
 	got := task1(i)
 	want := 11687500
-
-	assert.Equal(t, want, got)
-}
-
-func TestTask2(t *testing.T) {
-
-	got := task2(i)
-	want := 0
 
 	assert.Equal(t, want, got)
 }

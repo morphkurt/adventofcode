@@ -63,7 +63,7 @@ func Parse(input string) [][]rune {
 func FindStartingPoints(m [][]rune) []Point {
 	out := []Point{}
 	for y, row := range m {
-		for x, _ := range row {
+		for x := range row {
 			if m[y][x] == 'S' || m[y][x] == 'O' {
 				out = append(out, Point{x, y})
 			}
@@ -137,7 +137,7 @@ func RemoveDuplicates(points []Point) []Point {
 func Count(m [][]rune) int {
 	c := 0
 	for y, row := range m {
-		for x, _ := range row {
+		for x := range row {
 			if m[y][x] == 'O' {
 				c++
 			}

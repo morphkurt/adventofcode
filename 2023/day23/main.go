@@ -59,7 +59,7 @@ func FindNodes(sx, sy, ex, ey int, m [][]rune) []*JunctionNode {
 		point: Point{x: ex, y: ey},
 		next:  map[Point]int{}}}
 	for y, row := range m {
-		for x, _ := range row {
+		for x := range row {
 			n := FindNextStepsPart2(x, y, 0, make(map[string]int), m)
 			if len(n) > 2 {
 				out = append(out, &JunctionNode{

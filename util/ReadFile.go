@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"os"
+	"strconv"
 )
 
 func ReadFile(f string) string {
@@ -27,4 +28,13 @@ func Transpose(slice [][]string) [][]string {
 		}
 	}
 	return result
+}
+
+func ToInt(slice []string) []int {
+	out := []int{}
+	for _, v := range slice {
+		i, _ := strconv.Atoi(v)
+		out = append(out, i)
+	}
+	return out
 }

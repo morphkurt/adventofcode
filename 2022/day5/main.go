@@ -77,8 +77,7 @@ func task1(input string) string {
 	}
 	out := []rune{}
 	for i := 1; i <= len(m); i++ {
-		o := m[i].items[len(m[i].items)-1]
-		out = append(out, o)
+		out = append(out, m[i].items[len(m[i].items)-1])
 	}
 
 	return string(out)
@@ -100,9 +99,7 @@ func task2(input string) string {
 	}
 	out := []rune{}
 	for i := 1; i <= len(m); i++ {
-		o := m[i].items[len(m[i].items)-1]
-		out = append(out, o)
+		out = append(out, m[i].items[len(m[i].items)-1])
 	}
-
 	return string(out)
 }

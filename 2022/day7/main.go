@@ -15,6 +15,11 @@ type directory struct {
 	files       []*file
 }
 
+const (
+	ROOT      = "/"
+	MOVE_BACK = ".."
+)
+
 type file struct {
 	name string
 	size int
@@ -83,7 +88,7 @@ func (dir directory) getSize() int {
 
 func parse(input string) *directory {
 	root := &directory{
-		name:        "/",
+		name:        ROOT,
 		directories: []*directory{},
 		files:       []*file{},
 	}
@@ -94,13 +99,14 @@ func parse(input string) *directory {
 		if strings.HasPrefix(line, "$") {
 			if strings.HasPrefix(line, "$ cd") {
 				expectListing = false
-				name := ""
+				var name string
 				fmt.Sscanf(line, "$ cd %s", &name)
-				if name == ".." {
+				switch name {
+				case MOVE_BACK:
 					currentDir = currentDir.parent
-				} else if name == "/" {
+				case ROOT:
 					currentDir = root
-				} else {
+				default:
 					currentDir = getDir(name, currentDir.directories)
 				}
 			} else {

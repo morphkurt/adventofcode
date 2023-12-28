@@ -35,8 +35,8 @@ func task1(input string) int {
 	queue = append(queue, root)
 
 	for len(queue) > 0 {
-		dir := queue[len(queue)-1]
-		queue = queue[:len(queue)-1]
+		dir := queue[0]
+		queue = queue[1:]
 		size := dir.getSize()
 		if size < 100000 {
 			result += size
@@ -57,8 +57,8 @@ func task2(input string) int {
 	queue = append(queue, root)
 
 	for len(queue) > 0 {
-		dir := queue[len(queue)-1]
-		queue = queue[:len(queue)-1]
+		dir := queue[0]
+		queue = queue[1:]
 		size := dir.getSize()
 		if size > spaceNeededForUpdate {
 			toDelete = append(toDelete, size)

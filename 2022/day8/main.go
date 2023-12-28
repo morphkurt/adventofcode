@@ -8,18 +8,6 @@ import (
 	"github.com/morphkurt/adventofcode/util"
 )
 
-type directory struct {
-	name        string
-	parent      *directory
-	directories []*directory
-	files       []*file
-}
-
-type file struct {
-	name string
-	size int
-}
-
 func main() {
 	input := util.ReadFile("input")
 	task1 := task1(input)

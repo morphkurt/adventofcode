@@ -94,7 +94,8 @@ func parse(input string) *directory {
 		if strings.HasPrefix(line, "$") {
 			if strings.HasPrefix(line, "$ cd") {
 				expectListing = false
-				name := strings.Split(line, " ")[2]
+				name := ""
+				fmt.Sscanf(line, "$ cd %s", &name)
 				if name == ".." {
 					currentDir = currentDir.parent
 				} else if name == "/" {
@@ -108,7 +109,8 @@ func parse(input string) *directory {
 		}
 		if expectListing && !strings.HasPrefix(line, "$") {
 			if strings.HasPrefix(line, "dir") {
-				dirName := strings.Split(line, " ")[1]
+				dirName := ""
+				fmt.Sscanf(line, "dir %s", &dirName)
 				dir := &directory{
 					parent:      currentDir,
 					name:        dirName,

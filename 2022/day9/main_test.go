@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var i = `R 4
+var taskOneInput = `R 4
 U 4
 L 3
 D 1
@@ -15,15 +15,24 @@ D 1
 L 5
 R 2`
 
+var taskTwoInput = `R 5
+U 8
+L 8
+D 3
+R 17
+D 10
+L 25
+U 20`
+
 func TestTask1(t *testing.T) {
-	got := task1(i)
-	want := 21
+	got := task1(taskOneInput)
+	want := 13
 	assert.Equal(t, want, got)
 }
 
 func TestTask2(t *testing.T) {
-	got := task2(i)
-	want := 8
+	got := task2(taskTwoInput)
+	want := 36
 
 	assert.Equal(t, want, got)
 }

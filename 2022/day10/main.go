@@ -59,15 +59,15 @@ func task2(input string) string {
 }
 
 func process(cycles int, instructions []instruction) int {
-	instIdx := 0
-	instCycle := 0
-	var inst instruction
+	inst := instructions[0]
+	instIdx := 1 //next instruction
+	instCycle := inst.cycles
 	reg := 1
-	for i := 0; i < cycles; i++ {
+	for i := 1; i <= cycles; i++ {
 		if instCycle == 0 {
 			switch inst.name {
 			case "addx":
-				reg = reg + inst.value
+				reg += inst.value
 			}
 			inst = instructions[instIdx]
 			instCycle = inst.cycles

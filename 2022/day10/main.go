@@ -9,21 +9,21 @@ import (
 	"github.com/morphkurt/adventofcode/util"
 )
 
-var cycleMap = map[string]int{
-	"noop": 1,
-	"addx": 2,
+var instMap = map[string]inst{
+	"noop": {
+		instFn: noop,
+		cycles: 1,
+	},
+	"addx": {
+		instFn: addx,
+		cycles: 2,
+	},
 }
 
-var instFnMap = map[string]func(int, int) int{
-	"noop": noop,
-	"addx": addx,
-}
-
-type instruction struct {
-	name                string
-	instructionFunction func(int, int) int
-	value               int
-	cycles              int
+type inst struct {
+	instFn func(int, int) int
+	value  int
+	cycles int
 }
 
 func addx(r, x int) int {
@@ -35,7 +35,7 @@ func noop(r, x int) int {
 }
 
 type cpu struct {
-	inst     []instruction
+	inst     []inst
 	register int
 	instIdx  int
 	insCycle int
@@ -87,7 +87,7 @@ func task2(input string) string {
 func (c *cpu) tick() {
 	if c.insCycle == 0 {
 		if c.instIdx < len(c.inst) {
-			f := c.inst[c.instIdx].instructionFunction
+			f := c.inst[c.instIdx].instFn
 			c.register = f(c.register, c.inst[c.instIdx].value)
 			if c.instIdx < len(c.inst)-1 {
 				c.instIdx++
@@ -101,8 +101,8 @@ func (c *cpu) tick() {
 
 }
 
-func parse(input string) []instruction {
-	out := []instruction{}
+func parse(input string) []inst {
+	out := []inst{}
 	rows := strings.Split(input, "\n")
 	for _, line := range rows {
 		splitted := strings.Split(line, " ")
@@ -110,7 +110,9 @@ func parse(input string) []instruction {
 		if len(splitted) > 1 {
 			value, _ = strconv.Atoi(splitted[1])
 		}
-		out = append(out, instruction{name: splitted[0], instructionFunction: instFnMap[splitted[0]], value: value, cycles: cycleMap[splitted[0]]})
+		i := instMap[splitted[0]]
+		i.value = value
+		out = append(out, i)
 	}
 	return out
 }

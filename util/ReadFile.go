@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func ReadFile(f string) string {
@@ -33,8 +34,19 @@ func Transpose(slice [][]string) [][]string {
 func ToInt(slice []string) []int {
 	out := []int{}
 	for _, v := range slice {
-		i, _ := strconv.Atoi(v)
+		s := strings.TrimSpace(v)
+		i, _ := strconv.Atoi(s)
 		out = append(out, i)
+	}
+	return out
+}
+
+func ToUint(slice []string) []uint {
+	out := []uint{}
+	for _, v := range slice {
+		s := strings.TrimSpace(v)
+		i, _ := strconv.Atoi(s)
+		out = append(out, uint(i))
 	}
 	return out
 }

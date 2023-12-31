@@ -24,10 +24,8 @@ type Point struct {
 }
 
 type Node struct {
-	p       Point
-	h       int
-	steps   int
-	visited []Point
+	p     Point
+	steps int
 }
 
 type Nodes []Node
@@ -93,7 +91,7 @@ func solvePart1(m [][]rune, start, end Point) int {
 	h := &Nodes{}
 	heap.Init(h)
 	visitedNodes := map[Point]bool{}
-	heap.Push(h, Node{p: start, steps: 0, visited: []Point{}})
+	heap.Push(h, Node{p: start, steps: 0})
 	i := 0
 	for h.Len() > 0 {
 		n := heap.Pop(h).(Node)
@@ -102,19 +100,12 @@ func solvePart1(m [][]rune, start, end Point) int {
 		} else {
 			visitedNodes[n.p] = true
 		}
-		v := []Point{{x: n.p.x, y: n.p.y}}
-		v = append(v, n.visited...)
 		if n.p.x == end.x && n.p.y == end.y {
-			fmt.Println("--------------")
-			printMatrix(m, n.visited)
 			return n.steps
 		}
-		if Contains(n.visited, n.p) {
-			continue
-		}
-		points, height := findAscNextSteps(n.p, m)
-		for i, e := range points {
-			heap.Push(h, Node{p: e, steps: n.steps + 1, visited: v, h: height[i]})
+		points, _ := findAscNextSteps(n.p, m)
+		for _, e := range points {
+			heap.Push(h, Node{p: e, steps: n.steps + 1})
 		}
 		i++
 	}
@@ -125,7 +116,7 @@ func solvePart2(m [][]rune, start Point) int {
 	h := &Nodes{}
 	heap.Init(h)
 	visitedNodes := map[Point]bool{}
-	heap.Push(h, Node{p: start, steps: 0, visited: []Point{}})
+	heap.Push(h, Node{p: start, steps: 0})
 	i := 0
 	for h.Len() > 0 {
 		n := heap.Pop(h).(Node)
@@ -134,19 +125,13 @@ func solvePart2(m [][]rune, start Point) int {
 		} else {
 			visitedNodes[n.p] = true
 		}
-		v := []Point{{x: n.p.x, y: n.p.y}}
-		v = append(v, n.visited...)
 		if m[n.p.y][n.p.x] == 'a' {
-			fmt.Println("--------------")
-			printMatrix(m, n.visited)
 			return n.steps
 		}
-		if Contains(n.visited, n.p) {
-			continue
-		}
-		points, height := findDescNextSteps(n.p, m)
-		for i, e := range points {
-			heap.Push(h, Node{p: e, steps: n.steps + 1, visited: v, h: height[i]})
+
+		points, _ := findDescNextSteps(n.p, m)
+		for _, e := range points {
+			heap.Push(h, Node{p: e, steps: n.steps + 1})
 		}
 		i++
 	}

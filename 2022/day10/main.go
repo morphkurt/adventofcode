@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -13,10 +14,31 @@ var cycleMap = map[string]int{
 	"addx": 2,
 }
 
+var instFnMap = map[string]func(int, int) int{
+	"noop": noop,
+	"addx": addx,
+}
+
 type instruction struct {
-	name   string
-	value  int
-	cycles int
+	name                string
+	instructionFunction func(int, int) int
+	value               int
+	cycles              int
+}
+
+func addx(r, x int) int {
+	return r + x
+}
+
+func noop(r, x int) int {
+	return r
+}
+
+type cpu struct {
+	inst     []instruction
+	register int
+	instIdx  int
+	insCycle int
 }
 
 func main() {
@@ -29,22 +51,26 @@ func main() {
 
 func task1(input string) int {
 	cycles := []int{20, 60, 100, 140, 180, 220}
-	result := 0
 	instructions := parse(input)
-
-	for _, c := range cycles {
-		result += c * process(c, instructions)
+	result := 0
+	cpu := cpu{inst: instructions, instIdx: 0, insCycle: instructions[0].cycles, register: 1}
+	for i := 1; i <= 220; i++ {
+		cpu.tick()
+		if slices.Contains(cycles, i) {
+			result += cpu.register * i
+		}
 	}
-
 	return result
 }
 
 func task2(input string) string {
 	instructions := parse(input)
+	cpu := cpu{inst: instructions, instIdx: 0, insCycle: instructions[0].cycles, register: 1}
 	result := ""
 	line := []rune{}
 	for i := 1; i <= 240; i++ {
-		r := process(i, instructions)
+		cpu.tick()
+		r := cpu.register
 		if i%40 >= r && i%40 < r+3 {
 			line = append(line, '#')
 		} else {
@@ -58,24 +84,21 @@ func task2(input string) string {
 	return result
 }
 
-func process(cycles int, instructions []instruction) int {
-	inst := instructions[0]
-	instIdx := 1 //next instruction
-	instCycle := inst.cycles
-	reg := 1
-	for i := 1; i <= cycles; i++ {
-		if instCycle == 0 {
-			switch inst.name {
-			case "addx":
-				reg += inst.value
+func (c *cpu) tick() {
+	if c.insCycle == 0 {
+		if c.instIdx < len(c.inst) {
+			f := c.inst[c.instIdx].instructionFunction
+			c.register = f(c.register, c.inst[c.instIdx].value)
+			if c.instIdx < len(c.inst)-1 {
+				c.instIdx++
 			}
-			inst = instructions[instIdx]
-			instCycle = inst.cycles
-			instIdx++
+			c.insCycle = c.inst[c.instIdx].cycles
 		}
-		instCycle--
 	}
-	return reg
+	if c.insCycle > 0 {
+		c.insCycle--
+	}
+
 }
 
 func parse(input string) []instruction {
@@ -87,7 +110,7 @@ func parse(input string) []instruction {
 		if len(splitted) > 1 {
 			value, _ = strconv.Atoi(splitted[1])
 		}
-		out = append(out, instruction{name: splitted[0], value: value, cycles: cycleMap[splitted[0]]})
+		out = append(out, instruction{name: splitted[0], instructionFunction: instFnMap[splitted[0]], value: value, cycles: cycleMap[splitted[0]]})
 	}
 	return out
 }

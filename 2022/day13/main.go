@@ -24,14 +24,17 @@ type Point struct {
 }
 
 type Node struct {
-	p     Point
-	steps int
+	p       Point
+	h       int
+	steps   int
+	visited []Point
 }
 
 type Nodes []Node
 
 func (h Nodes) Len() int { return len(h) }
 func (h Nodes) Less(i, j int) bool {
+
 	return h[i].steps < h[j].steps
 }
 func (h Nodes) Swap(i, j int) { h[i], h[j] = h[j], h[i] }
@@ -77,11 +80,20 @@ func task2(input string) int {
 	return solvePart2(m, end)
 }
 
+func Contains(c []Point, e Point) bool {
+	for _, p := range c {
+		if p.x == e.x && p.y == e.y {
+			return true
+		}
+	}
+	return false
+}
+
 func solvePart1(m [][]rune, start, end Point) int {
 	h := &Nodes{}
 	heap.Init(h)
 	visitedNodes := map[Point]bool{}
-	heap.Push(h, Node{p: start, steps: 0})
+	heap.Push(h, Node{p: start, steps: 0, visited: []Point{}})
 	i := 0
 	for h.Len() > 0 {
 		n := heap.Pop(h).(Node)
@@ -90,12 +102,19 @@ func solvePart1(m [][]rune, start, end Point) int {
 		} else {
 			visitedNodes[n.p] = true
 		}
+		v := []Point{{x: n.p.x, y: n.p.y}}
+		v = append(v, n.visited...)
 		if n.p.x == end.x && n.p.y == end.y {
+			fmt.Println("--------------")
+			printMatrix(m, n.visited)
 			return n.steps
 		}
-		points, _ := findAscNextSteps(n.p, m)
-		for _, e := range points {
-			heap.Push(h, Node{p: e, steps: n.steps + 1})
+		if Contains(n.visited, n.p) {
+			continue
+		}
+		points, height := findAscNextSteps(n.p, m)
+		for i, e := range points {
+			heap.Push(h, Node{p: e, steps: n.steps + 1, visited: v, h: height[i]})
 		}
 		i++
 	}
@@ -106,7 +125,7 @@ func solvePart2(m [][]rune, start Point) int {
 	h := &Nodes{}
 	heap.Init(h)
 	visitedNodes := map[Point]bool{}
-	heap.Push(h, Node{p: start, steps: 0})
+	heap.Push(h, Node{p: start, steps: 0, visited: []Point{}})
 	i := 0
 	for h.Len() > 0 {
 		n := heap.Pop(h).(Node)
@@ -115,13 +134,19 @@ func solvePart2(m [][]rune, start Point) int {
 		} else {
 			visitedNodes[n.p] = true
 		}
+		v := []Point{{x: n.p.x, y: n.p.y}}
+		v = append(v, n.visited...)
 		if m[n.p.y][n.p.x] == 'a' {
+			fmt.Println("--------------")
+			printMatrix(m, n.visited)
 			return n.steps
 		}
-
-		points, _ := findDescNextSteps(n.p, m)
-		for _, e := range points {
-			heap.Push(h, Node{p: e, steps: n.steps + 1})
+		if Contains(n.visited, n.p) {
+			continue
+		}
+		points, height := findDescNextSteps(n.p, m)
+		for i, e := range points {
+			heap.Push(h, Node{p: e, steps: n.steps + 1, visited: v, h: height[i]})
 		}
 		i++
 	}
@@ -185,4 +210,20 @@ func parse(input string) [][]rune {
 		out = append(out, []rune(row))
 	}
 	return out
+}
+
+func printMatrix(matrix [][]rune, visited []Point) {
+	for y, m := range matrix {
+		r := ""
+		for x, c := range m {
+			l := string(c)
+			for _, v := range visited {
+				if v.x == x && v.y == y {
+					l = Red + l + Reset
+				}
+			}
+			r += l
+		}
+		fmt.Println(r)
+	}
 }

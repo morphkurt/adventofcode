@@ -35,8 +35,8 @@ func noop(r, x int) int {
 }
 
 type cpu struct {
-	inst     []inst
-	register int
+	instList []inst
+	reg      int
 	instIdx  int
 	insCycle int
 }
@@ -53,11 +53,11 @@ func task1(input string) int {
 	cycles := []int{20, 60, 100, 140, 180, 220}
 	instructions := parse(input)
 	result := 0
-	cpu := cpu{inst: instructions, instIdx: 0, insCycle: instructions[0].cycles, register: 1}
+	cpu := cpu{instList: instructions, instIdx: 0, insCycle: instructions[0].cycles, reg: 1}
 	for i := 1; i <= 220; i++ {
 		cpu.tick()
 		if slices.Contains(cycles, i) {
-			result += cpu.register * i
+			result += cpu.reg * i
 		}
 	}
 	return result
@@ -65,12 +65,12 @@ func task1(input string) int {
 
 func task2(input string) string {
 	instructions := parse(input)
-	cpu := cpu{inst: instructions, instIdx: 0, insCycle: instructions[0].cycles, register: 1}
+	cpu := cpu{instList: instructions, instIdx: 0, insCycle: instructions[0].cycles, reg: 1}
 	result := ""
 	line := []rune{}
 	for i := 1; i <= 240; i++ {
 		cpu.tick()
-		r := cpu.register
+		r := cpu.reg
 		if i%40 >= r && i%40 < r+3 {
 			line = append(line, '#')
 		} else {
@@ -86,13 +86,13 @@ func task2(input string) string {
 
 func (c *cpu) tick() {
 	if c.insCycle == 0 {
-		if c.instIdx < len(c.inst) {
-			f := c.inst[c.instIdx].instFn
-			c.register = f(c.register, c.inst[c.instIdx].value)
-			if c.instIdx < len(c.inst)-1 {
+		if c.instIdx < len(c.instList) {
+			f := c.instList[c.instIdx].instFn
+			c.reg = f(c.reg, c.instList[c.instIdx].value)
+			if c.instIdx < len(c.instList)-1 {
 				c.instIdx++
 			}
-			c.insCycle = c.inst[c.instIdx].cycles
+			c.insCycle = c.instList[c.instIdx].cycles
 		}
 	}
 	if c.insCycle > 0 {

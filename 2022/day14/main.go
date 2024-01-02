@@ -33,11 +33,10 @@ func task1(input string) int {
 	for {
 		dropSand(m, Point{500 - minX, 0})
 		cc := count(m)
-		if cc > c {
-			c = cc
-		} else {
+		if cc == c {
 			return i - 1
 		}
+		c = cc
 		i++
 	}
 }
@@ -46,15 +45,14 @@ func task2(input string) int {
 	p := parse(input)
 	m, _, _, _, _ := toMapTask2(p)
 	c := 0
-	i := 0
+	i := 1
 	for {
 		dropSand(m, Point{len(m[0])/2 + 1, 0})
 		cc := count(m)
-		if cc > c {
-			c = cc
-		} else {
-			return i
+		if cc == c {
+			return i - 1
 		}
+		c = cc
 		i++
 	}
 }

@@ -39,7 +39,7 @@ func task1(input string) int {
 	slices.Sort(right)
 	sum := 0
 	for i := 0; i < len(c); i++ {
-		sum += int(math.Abs(float64(left[i]) - float64(right[i])))
+		sum += int(math.Abs(float64(left[i] - right[i])))
 	}
 	return sum
 }
@@ -66,12 +66,7 @@ func ParseTask2(input string) ([]int, map[int]int) {
 		values := strings.Split(v, "   ")
 		left, _ := strconv.Atoi(values[0])
 		right, _ := strconv.Atoi(values[1])
-		_, ok := m[right]
-		if ok {
-			m[right] = m[right] + 1
-		} else {
-			m[right] = 1
-		}
+		m[right]++
 		out = append(out, left)
 	}
 	return out, m
